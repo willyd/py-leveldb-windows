@@ -15,7 +15,9 @@
 
 
 extern "C" {
-#include <Python.h>
+// allow building this in debug
+#include <boost/python/detail/wrap_python.hpp> 
+
 #include <structmember.h>
 
 #include <stdlib.h>
