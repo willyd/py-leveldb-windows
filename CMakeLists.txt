@@ -1,6 +1,8 @@
 cmake_minimum_required (VERSION 3.0 FATAL_ERROR)
 project (py-leveldb)
 
+option(PYLEVELDB_COPY_DEPEDENCIES "Copy or not the dependencies" ON)
+
 find_package(leveldb REQUIRED)
 include_directories(${leveldb_INCLUDE_DIRS})
 
@@ -27,16 +29,14 @@ target_link_libraries(pyleveldb ${leveldb_LIBRARIES})
 	
 install(TARGETS pyleveldb DESTINATION bin)
 
-include(TargetCopyDependencies.cmake)
-target_copy_dependencies(pyleveldb
-                         # we know dependencies are one level up
-                         DEPENDENCIES_DIR ${CMAKE_INSTALL_PREFIX}/..
-                         # copy to install dir   
-                         DESTINATION "${CMAKE_INSTALL_PREFIX}/bin"
-                         # use hard links
-                         USE_HARD_LINKS
-                         )
-
-# TODO add test
-
-
+if(PYLEVELDB_COPY_DEPEDENCIES)
+    include(TargetCopyDependencies.cmake)
+    target_copy_dependencies(pyleveldb
+                             # we know dependencies are one level up
+                             DEPENDENCIES_DIR ${CMAKE_INSTALL_PREFIX}/..
+                             # copy to install dir   
+                             DESTINATION "${CMAKE_INSTALL_PREFIX}/bin"
+                             # use hard links
+                             USE_HARD_LINKS
+                             )
+endif()                         
